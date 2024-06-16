@@ -10,7 +10,6 @@ This notebook demonstrates automated hyperparameter optimization (HPO) using the
 4. [How to Use](#how-to-use)
 5. [Results](#results)
 6. [Dependencies](#dependencies)
-7. [License](#license)
 
 ---
 
