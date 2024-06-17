@@ -7,6 +7,9 @@ This notebook demonstrates automated hyperparameter optimization (HPO) using the
 1. [Introduction](#introduction)
 2. [Dataset](#dataset)
 3. [Implementation Details](#implementation-details)
+   - [Exploratory Data Analysis (EDA)](#exploratory-data-analysis-eda)
+   - [Model Training and Optimization](#model-training-and-optimization)
+   - [Tree-structured Parzen Estimator (TPE)](#tree-structured-parzen-estimator-tpe)
 4. [How to Use](#how-to-use)
 5. [Results](#results)
 6. [Dependencies](#dependencies)
@@ -36,14 +39,29 @@ The dataset used is the breast cancer dataset from sklearn (`load_breast_cancer(
 - Defines the objective function for cross-validated ROC AUC score.
 - Uses `scipy.stats` for defining parameter space with probability distributions.
 
-### Workflow
+### Tree-structured Parzen Estimator (TPE)
 
-- **Load Data:** Loads breast cancer data and performs EDA.
-- **Optimize Hyperparameters:** Uses TPE to find the best hyperparameters for RandomForestClassifier.
-- **Train Model:** Trains the final model using the optimized hyperparameters.
-- **Evaluate Model:** Evaluates model performance using ROC AUC score, classification report, and confusion matrix.
-- **Compare Optimization Techniques:** Compares TPE optimization results with random search for performance validation.
-- **Visualize Optimization:** Plots learning rate distribution curves to visualize optimization progress.
+The Tree-structured Parzen Estimator (TPE) is a Bayesian optimization technique that models the distribution of good and bad hyperparameters separately. This allows for more efficient search of the hyperparameter space compared to random search or grid search.
+
+#### TPE Implementation
+
+1. **Initialization**: 
+   - Start with a specified number of initial random points.
+   
+2. **Suggestions**:
+   - Once the initial points are evaluated, new hyperparameter sets are suggested based on the TPE method.
+   - TPE models the likelihood of hyperparameter configurations as coming from one of two Gaussians:
+     - One Gaussian models the hyperparameters associated with the top-performing configurations (good configurations).
+     - The other models the remaining configurations (bad configurations).
+   - The ratio of these likelihoods is used to select new hyperparameter configurations that are more likely to perform well.
+
+3. **Optimization Loop**:
+   - Evaluate the suggested hyperparameters and update the Gaussian models.
+   - Continue until the specified number of iterations is reached or an early stopping criterion is met.
+
+4. **Output**:
+   - The best hyperparameters found during the optimization process.
+
 
 ## How to Use
 
